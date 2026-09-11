@@ -421,12 +421,12 @@ speedBox.FocusLost:Connect(function(enterPressed)
 end)
 minusBtn.MouseButton1Click:Connect(function()
     if not running or minimized then return end
-    boostSpeed = math.clamp(boostSpeed - SPEED_STEP, MIN_SPEED, MAX_SPEED)
+    boostSpeed = math.max(MIN_SPEED, boostSpeed - SPEED_STEP)
     updateSpeedDisplay()
 end)
 plusBtn.MouseButton1Click:Connect(function()
     if not running or minimized then return end
-    boostSpeed = math.clamp(boostSpeed + SPEED_STEP, MIN_SPEED, MAX_SPEED)
+    boostSpeed = math.min(MAX_SPEED, boostSpeed + SPEED_STEP)
     updateSpeedDisplay()
 end)
 toggleBtn.MouseButton1Click:Connect(function()
@@ -481,13 +481,9 @@ table.insert(connections, RunService.Heartbeat:Connect(function()
     if hum then
         local isActuallyJumping = hum.Jump or hum:GetState() == Enum.HumanoidStateType.Freefall or hum:GetState() == Enum.HumanoidStateType.Jumping
         if boostEnabled and isActuallyJumping then
-            if not isBoosting then
-                isBoosting = true
-                hum.WalkSpeed = boostSpeed
-                label.Text = "BOOSTING"
-            else
-                hum.WalkSpeed = boostSpeed
-            end
+            isBoosting = true
+            hum.WalkSpeed = boostSpeed
+            label.Text = "BOOSTING"
         else
             if isBoosting then
                 isBoosting = false
