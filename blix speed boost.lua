@@ -411,7 +411,7 @@ end
 local function applySpeedFromBox()
     local num = tonumber(speedBox.Text)
     if num then
-        boostSpeed = math.clamp(math.floor(num), MIN_SPEED, MAX_SPEED)
+        boostSpeed = math.max(1, math.floor(num))
     end
     updateSpeedDisplay()
 end
